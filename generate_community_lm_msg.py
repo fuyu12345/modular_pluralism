@@ -30,8 +30,14 @@ if __name__ == '__main__':
     if checkpoint_path is not None:
         checkpoint_paths = [checkpoint_path]
     else:
-        checkpoint_paths = ["bunsenfeng/mistral-news_l", "bunsenfeng/mistral-news_c", "bunsenfeng/mistral-news_r",
-                            "bunsenfeng/mistral-reddit_l", "bunsenfeng/mistral-reddit_c", "bunsenfeng/mistral-reddit_r"]
+        checkpoint_paths = [ "bunsenfeng/mistral-news_r"
+                            ]
+        # "bunsenfeng/mistral-news_l",
+        # "bunsenfeng/mistral-news_c", "bunsenfeng/mistral-news_r",
+# "bunsenfeng/mistral-reddit_l", "bunsenfeng/mistral-reddit_c", "bunsenfeng/mistral-reddit_r"        
+
+
+
         # alterntiavely, culture-based community lms
         # checkpoint_paths = ["bunsenfeng/mistral-asia_culture", "bunsenfeng/mistral-europe_culture",
         #                     "bunsenfeng/mistral-northamerica_culture", "bunsenfeng/mistral-southamerica_culture",
@@ -43,10 +49,11 @@ if __name__ == '__main__':
         existing_msgs = os.listdir("community_lm_msgs/")
         if input_file + "_" + checkpoint_path.split("/")[1] + ".json" in existing_msgs:
             continue
-    
-        tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
+        
+        base_model_path = "/scratch/zczlyf7/their_model/Mistral-7B-Instruct-v0.1"
+        tokenizer = AutoTokenizer.from_pretrained(base_model_path)
         base_model = AutoModelForCausalLM.from_pretrained(
-            "mistralai/Mistral-7B-Instruct-v0.1",
+            base_model_path,
             load_in_8bit=False,
             torch_dtype=torch.float16,
             device_map={"": "cuda"},
